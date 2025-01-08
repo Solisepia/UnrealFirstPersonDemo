@@ -25,13 +25,16 @@ void AMyFirstPGameMode::BeginPlay()
 
 void AMyFirstPGameMode::CountDownTimerTick()
 {
-	if (CountDownTime > 0)
+	if (AMyPlayerState* PlayerState = Cast<AMyPlayerState>(UGameplayStatics::GetPlayerState(GetWorld(),0)))
 	{
-		CountDownTime--;
-	}
-	else
-	{
-		EndGame();
+		if (PlayerState->CurrentHealth > 0 && CountDownTime > 0)
+		{
+			CountDownTime--;
+		}
+		else
+		{
+			EndGame();
+		}
 	}
 }
 

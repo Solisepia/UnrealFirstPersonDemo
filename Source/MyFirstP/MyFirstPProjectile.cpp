@@ -1,14 +1,12 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
-
-#include <string>
+#include "MyFirstPProjectile.h"
 
 #include "MyPlayerState.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
 #include "TargetCube.h"
-#include "MyFirstPProjectile.h"
-
 #include "MyFirstPCharacter.h"
+
 
 AMyFirstPProjectile::AMyFirstPProjectile()
 	: Shooter(nullptr)
@@ -36,12 +34,6 @@ AMyFirstPProjectile::AMyFirstPProjectile()
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
-
-	static ConstructorHelpers::FClassFinder<ACharacter> BPEnemyClass(TEXT("/Game/FirstPerson/AI/BP_Enemy"));
-	if (BPEnemyClass.Succeeded())
-	{
-		EnemyClass = BPEnemyClass.Class;
-	}
 }
 
 void AMyFirstPProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -50,13 +42,12 @@ void AMyFirstPProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
 	{
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
-		if (OtherActor->IsA(ATargetCube::StaticClass()) || OtherActor->IsA(EnemyClass))
+		if (OtherActor->IsA(ATargetCube::StaticClass()))
 		{
 			if (Shooter)
 			{
 				AMyPlayerState* PlayerState = Cast<AMyPlayerState>(Shooter->PlayerState);
 				PlayerState->SetScore(PlayerState->GetScore()+1);
-				GEngine->AddOnScreenDebugMessage(0, 5.0f, FColor::Yellow, std::to_wstring(PlayerState->GetScore()).data());
 			}
 		}
 		Destroy();
@@ -73,7 +64,6 @@ void AMyFirstPProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 			{
 				AMyPlayerState* PlayerState = Cast<AMyPlayerState>(Shooter->PlayerState);
 				PlayerState->SetScore(PlayerState->GetScore()+2);
-				GEngine->AddOnScreenDebugMessage(0, 5.0f, FColor::Yellow, std::to_wstring(PlayerState->GetScore()).data());
 			}
 		}
 	}

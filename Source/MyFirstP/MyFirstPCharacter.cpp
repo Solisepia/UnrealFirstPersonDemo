@@ -35,7 +35,7 @@ AMyFirstPCharacter::AMyFirstPCharacter()
 	Mesh1P->bCastDynamicShadow = false;
 	Mesh1P->CastShadow = false;
 	// Mesh1P->SetRelativeRotation(FRotator(0.9f, -19.19f, 5.2f));
-	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
+	Mesh1P->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
 	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &AMyFirstPCharacter::OnHit);
 }
 
@@ -97,7 +97,7 @@ void AMyFirstPCharacter::Look(const FInputActionValue& Value)
 
 void AMyFirstPCharacter::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if (OtherActor->IsA(AMyFirstPProjectile::StaticClass()))
+	if (OtherActor != nullptr && OtherActor->IsA(AMyFirstPProjectile::StaticClass()))
 	{
 		if (AMyFirstPProjectile* MyProjectile = Cast<AMyFirstPProjectile>(OtherActor))
 		{

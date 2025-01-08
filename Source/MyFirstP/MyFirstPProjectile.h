@@ -36,7 +36,5 @@ public:
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Shooter, meta = (AllowPrivateAccess = "true"))
 	AController* Shooter;
-
-	TSubclassOf<ACharacter> EnemyClass;
 };
 
